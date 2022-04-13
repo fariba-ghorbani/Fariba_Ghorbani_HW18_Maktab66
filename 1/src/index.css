@@ -1,0 +1,165 @@
+@font-face {
+  font-family: 'shabnam';
+  src: url('./Assets/Fonts/Shabnam-Medium.eot');
+  src: url('./Assets/Fonts/Shabnam-Medium.eot') format('embedded-opentype'),
+       url('./Assets/Fonts/Shabnam-Medium.woff') format('woff'),
+       url('./Assets/Fonts/Shabnam-Medium.woff2') format('woff2'),
+       url('./Assets/Fonts/Shabnam-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'shabnam';
+  src: url('./Assets/Fonts/Shabnam-Bold.eot');
+  src: url('./Assets/Fonts/Shabnam-Bold.eot') format('embedded-opentype'),
+       url('./Assets/Fonts/Shabnam-Bold.woff') format('woff'),
+       url('./Assets/Fonts/Shabnam-Bold.woff2') format('woff2'),
+       url('./Assets/Fonts/Shabnam-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'shabnam';
+  src: url('./Assets/Fonts/Shabnam-Light.eot');
+  src: url('./Assets/Fonts/Shabnam-Light.eot') format('embedded-opentype'),
+       url('./Assets/Fonts/Shabnam-Light.woff') format('woff'),
+       url('./Assets/Fonts/Shabnam-Light.woff2') format('woff2'),
+       url('./Assets/Fonts/Shabnam-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+body {
+  direction: rtl;
+}
+
+.App {
+  font-family: 'shabnam', 'sans-serif';
+  margin: 30px auto;
+  width: 90%;
+  max-width: 700px;
+}
+
+.form-container {
+  color: white;
+  background-color: #06323d;
+  border: 20px solid rgb(192, 182, 158);
+  padding: 30px 20px;
+  flex-basis: 90%;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.toggle-form__box {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #57686d;
+}
+
+.toggle-form__box.selected {
+  background-color: rgb(19, 180, 145);
+}
+
+/* title */
+.title {
+  font-size: 1.5rem;
+}
+
+/* input and select styling */
+input {
+  appearance: none;
+  color: white;
+  background-color: transparent;
+  padding: 7px;
+  width: 100%;
+  border: none;
+  border: 1px solid rgb(201, 201, 201);
+  border-radius: 2px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input::placeholder {
+  font-family: 'shabnam', 'sans-serif';
+  color: rgb(143, 143, 143);
+}
+
+.select {
+  font-family: 'shabnam', 'sans-serif';
+  color: white;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  border: 1px solid rgb(201, 201, 201);
+  padding: 7px;
+  border-radius: 2px;
+}
+
+select.non-selected {
+  color: rgb(143, 143, 143);
+}
+option {
+  font-family: 'shabnam', 'sans-serif';
+  background-color: rgb(216, 216, 216);
+  color: black;
+}
+
+.edu, .name, .province {
+  gap: 1rem;
+}
+/* general error */
+.error {
+  font-size: 0.8rem;
+  color: rgb(255, 79, 79);
+}
+/* the main error on login form */
+.log-error {
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* submit button */
+.submit {
+  font-family: 'shabnam', 'sans-serif';
+  width: 100%;
+  border: none;
+  background-color: rgb(19, 180, 145);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+} 
+
+.submit:hover {
+  background-color: rgb(17, 153, 124);
+}
+
+/* password icon */
+.field {
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.wrapper span {
+  position: absolute;
+  left: 20px; top: 50%;
+  transform: translateY(-50%);
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* modal */
+.modal {
+  font-family: 'shabnam', 'sans-serif';
+}
+
