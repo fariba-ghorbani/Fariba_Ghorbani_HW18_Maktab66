@@ -1,14 +1,12 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
+import React, { useState } from 'react'
 import Signup from './Signup'
 import Login from './Login'
-import { Authentication } from '../Context/authentication'
+import HigherOrderComponent from './HigherOrderComponent'
+
 
 function ManageForms() {
     const [formstatus, setStatus] = useState(true)
-    const { currentUser } = useContext(Authentication)
     
-    console.log("manage form")
-
     const toggleForms = (e) => {
         e.target.id==="login"? setStatus(false): setStatus(true)
     }
@@ -20,9 +18,8 @@ function ManageForms() {
                 <div id="signup" className={`toggle-form__box flex-fill ${formstatus? "selected":""}`} onClick={toggleForms}>ثبت نام</div>
             </div>
             {formstatus? <Signup />:<Login />}
-            {currentUser? "hello": "bye"}
         </div>
     )
 }
 
-export default ManageForms;
+export default HigherOrderComponent(ManageForms);

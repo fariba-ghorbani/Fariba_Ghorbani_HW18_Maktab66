@@ -9,7 +9,6 @@ function App() {
 	const [loading, setLoading] = useState(false);
 	const [err, setErr] = useState("");
 
-	console.log("app")
     useEffect(() => {
 		setLoading(true);
 		axios.get('http://localhost:3001/users')
@@ -39,9 +38,7 @@ function App() {
 			changeCurrentUser: changeCurrentUser,
 			addUser: addUser
 		}}>
-			<ManageForms />
-		
-            {/* <Login /> */}
+			<ManageForms loading={loading} err={err} />
 		</Authentication.Provider>
         </>
     );

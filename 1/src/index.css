@@ -30,23 +30,39 @@
 }
 
 body {
+  width: 100%;
   direction: rtl;
   font-family: 'shabnam', 'sans-serif';
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.App {
-  margin: 30px auto;
+.app {
+  font-family: 'shabnam', 'sans-serif';
+  padding: 30px;
+  text-align: center;
   width: 90%;
-  max-width: 700px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-title {
+   font-size: 2rem;
 }
 
 .form-container {
+  margin: 0 auto;
   font-family: 'shabnam', 'sans-serif';
   color: white;
   background-color: #06323d;
   border: 20px solid rgb(192, 182, 158);
   padding: 30px 20px;
-  flex-basis: 90%;
+  max-width: 800px;
+  width: 90%;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
@@ -164,4 +180,3 @@ option {
 .modal {
   font-family: 'shabnam', 'sans-serif';
 }
-

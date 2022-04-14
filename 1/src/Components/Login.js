@@ -23,6 +23,7 @@ const Login = () => {
         onSubmit: (values, { setSubmitting, resetForm }) => {
             let idx = accounts.findIndex(user => user.email === values.email && user.password === values.password)
             if (idx >= 0) {
+                console.log("hello")
                 changeCurrentUser(accounts[idx])
                 setMessage("")
                 resetForm()
