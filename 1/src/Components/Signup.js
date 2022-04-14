@@ -1,45 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Province from "./Province";
 import { BiHide, BiShow } from 'react-icons/bi'
 import { useFormik } from "formik";
-import * as Yup from 'yup'
+import SignupSchema from "../Validation/Signupschema";
+import { Authentication } from "../Context/authentication";
+import axios from "axios";
 
 const Signup = () => {
     const [passwordBool, setPasswordBool] = useState(true)
     const [provinceData, setProvinceData] = useState("");
+    const [message, setMessage] = useState("")
+    const { accounts, addUser, changeCurrentUser} = useContext(Authentication)
 
-    const changeIcon = () => {
-        setPasswordBool(prev => !prev)
-    }
-
-    // fetching data
+    // get province data
     useEffect(() => {
-        fetch('/iranstates.json')
-            .then(res => res.json())
-            .then(data => {
-                setProvinceData(data)
-            })
+        axios.get('/iranstates.json')
+            .then(res => setProvinceData(res.data))
+            .catch(err => console.log(err))
     }, [])
-
-    const SignupSchema = Yup.object().shape({
-        name: Yup.string()
-            .required('لطفا نام خود را وارد کنید'),
-        lastName: Yup.string()
-            .required('لطفا نام خود را وارد کنید'),
-        email: Yup.string()
-            .email('آدرس پست الکترونیکی نامعتبر است')
-            .required('لطفا آدرس پست الکترونیکی را وارد کنید'),
-        password: Yup.string()
-            .min(6, 'کلمه عبور باید حداقل دارای 6 کاراکتر باشد')
-            .required('لطفا کلمه عبور را وارد کنید'),
-        education: Yup.string(),
-
-        eduPlace: Yup.string().when("education", {
-            is: education => education !== "",
-            then: Yup.string().required('لطفا محل تحصیل خود را وارد کنید'),
-            otherwise: Yup.string(),
-        })
-    });
 
     const formik = useFormik({
         initialValues: {
@@ -52,18 +30,29 @@ const Signup = () => {
             education: "",
             eduPlace: "",
         },
-
         validationSchema : SignupSchema,
 
-        onSubmit: (values , { setSubmitting }) => {
+        onSubmit: (values , { setSubmitting, resetForm }) => {
+            if (accounts.some(user => user.email === values.email)) {
+                setMessage("یک حساب کاربری با این ایمیل قبلا ساخته شده است")
+            } else {
+                addUser({...values, "id": ""+(accounts.length + 1)})
+                console.log({...values, "id": ""+(accounts.length + 1)})
+                changeCurrentUser({...values, "id": ""+(accounts.length + 1)})
+                setMessage("")
+                resetForm()
+            }
             setSubmitting(false);
         }
     })
 
-
     useEffect(() => {
         formik.values.city = ""
     }, [formik.values.province])
+
+    const changeIcon = () => {
+        setPasswordBool(prev => !prev)
+    }
 
     return (
         <>
@@ -79,7 +68,7 @@ const Signup = () => {
                         value={formik.values.name} 
                         onChange={formik.handleChange}/>
 
-                        {/* {formErrors.name? <p className="error mt-2 mb-0">{formErrors.name}</p>: null} */}
+                        {formik.errors.name && formik.touched.name && <p className="error mt-2 mb-0">{formik.errors.name}</p>}
                     </div>
                     
                     <div className="field flex-fill">
@@ -89,17 +78,18 @@ const Signup = () => {
                         name="lastName" 
                         value={formik.values.lastName} 
                         onChange={formik.handleChange}/>
-                        {/* {formErrors.lastName? <p className="error mt-2 mb-0">{formErrors.lastName}</p>: null} */}
+
+                        {formik.errors.lastName && formik.touched.lastName && <p className="error mt-2 mb-0">{formik.errors.lastName}</p>}
                     </div>
                 </div>
 
                 {/* the city and province */}
                 <div className="field mb-3">
-                    <Province handleChange={formik.handleChange} 
-                    handleBlur={formik.handleBlur}
+                    <Province 
+                    formik={formik}
                     provinceData={provinceData}
-                    values={formik.values}
                     />
+                    {(formik.errors.province||formik.errors.city)  && (formik.touched.province || formik.touched.city) && <p className="error mt-2 mb-0">{formik.errors.province || formik.errors.city}</p>}
                 </div>
 
                 {/*education and place  */}
@@ -121,8 +111,7 @@ const Signup = () => {
                         onChange={formik.handleChange}
                         /> : null
                     }
-
-                    {/* {formErrors.eduPlace? <p className="error mt-2 mb-0">{formErrors.eduPlace}</p>: null} */}
+                    {formik.errors.eduPlace && formik.touched.eduPlace && <p className="error mt-2 mb-0">{formik.errors.eduPlace}</p>}
                 </div>
 
                 {/* email */}
@@ -132,7 +121,8 @@ const Signup = () => {
                     name="email" 
                     value={formik.values.email} 
                     onChange={formik.handleChange}/>
-                    {/* {formErrors.email? <p className="error mt-2 mb-0">{formErrors.email}</p>: null} */}
+
+                    {formik.errors.email && formik.touched.email && <p className="error mt-2 mb-0">{formik.errors.email}</p>}
                 </div>
 
                 {/* password */}
@@ -144,11 +134,14 @@ const Signup = () => {
                         name="password" 
                         value={formik.values.password} 
                         onChange={formik.handleChange}/>
+
                         <span>{passwordBool? 
                         <BiHide className="icon" onClick={changeIcon}/> : <BiShow className="icon" onClick={changeIcon}/>}</span>
                     </div>
-                {/* {formErrors.password? <p className="error mt-2 mb-0">{formErrors.password}</p>: null} */}
+                    {formik.errors.password && formik.touched.password && <p className="error mt-2 mb-0">{formik.errors.password}</p>}
                 </div>
+                
+                {<p className="log-error error mt-2 mb-0">{message}</p>}
 
                 {/* submit */}
                 <button className="submit mt-3" type="submit">ثبت نام</button>

@@ -1,31 +1,48 @@
-import { useEffect, useState } from 'react';
-import Login from './Components/Login'
+import { useEffect, useState, memo } from 'react';
 import axios from 'axios'
-import { authentication } from './Context/authentication';
-import ManageApp from './Components/ManageApp'
+import { Authentication } from './Context/authentication';
+import ManageForms from './Components/ManageForms'
 
 function App() {
 	const [data, setData] = useState({})
+	const [currentUser, setCurrentUser] = useState("")
+	const [loading, setLoading] = useState(false);
+	const [err, setErr] = useState("");
 
+	console.log("app")
     useEffect(() => {
+		setLoading(true);
 		axios.get('http://localhost:3001/users')
 			.then(res => {
 				setData(res.data)
 			})
-			.catch(err => console.log(err))
+			.catch(err => setErr(err))
+			.finally(() => setLoading(false));
     }, [])
 
-	useEffect(() => {
-		console.log(data)
-	}, [data])
+	const addUser = (newUser) => {
+		axios.post('http://localhost:3001/users', newUser)
+		.then((e) => e.preventDefault())
+		.catch(err => setErr(err))
+		.finally(res => console.log(res.data))
+	}
+
+	const changeCurrentUser = (user) => {
+		setCurrentUser(user)
+	}
 
     return (
         <>
-		<authentication.Provider value={{accounts: data}}>
-			<ManageApp />
+		<Authentication.Provider value={{
+			accounts: data,
+			currentUser: currentUser,
+			changeCurrentUser: changeCurrentUser,
+			addUser: addUser
+		}}>
+			<ManageForms />
 		
             {/* <Login /> */}
-		</authentication.Provider>
+		</Authentication.Provider>
         </>
     );
 }

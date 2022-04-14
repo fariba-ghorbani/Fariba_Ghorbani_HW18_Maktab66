@@ -1,16 +1,16 @@
 import React from 'react'
 import { v4 as uuid } from 'uuid';
 
-function Province({values, handleChange, provinceData}) {
+function Province({formik, provinceData}) {
 
     return (
         <>
             <div className="province d-flex flex-column flex-sm-row" >
                 <select 
-                    className={`select flex-fill w-100 ${!values.province? "non-selected": ""}`}
+                    className={`select flex-fill w-100 ${!formik.values.province? "non-selected": ""}`}
                     name="province" 
-                    onChange={handleChange}
-                    value={values.province}> 
+                    onChange={formik.handleChange}
+                    value={formik.values.province}> 
 
                     <option className="default" value="">استان</option>
                     {Object.keys(provinceData).map(prov => {
@@ -19,14 +19,14 @@ function Province({values, handleChange, provinceData}) {
                 </select>
                 
                 <select 
-                    className={`select flex-fill w-100 ${!values.city? "non-selected": ""}`}
+                    className={`select flex-fill w-100 ${!formik.values.city? "non-selected": ""}`}
                     name="city" 
-                    onChange={handleChange}
-                    value={values.city}>
+                    onChange={formik.handleChange}
+                    value={formik.values.city}>
 
-                    {values.province?
+                    {formik.values.province?
                     <><option className="default" value="" selected hidden>شهرستان</option>
-                    {provinceData[values.province].map(city => {
+                    {provinceData[formik.values.province].map(city => {
                         return <option key={uuid()}>{city}</option>
                     })}</>
                     : 

@@ -1,38 +1,37 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { BiHide, BiShow } from 'react-icons/bi'
 import { useFormik } from "formik";
-import * as Yup from 'yup'
+import LoginSchema from '../Validation/Loginschema';
+import { Authentication } from '../Context/authentication';
 
 const Login = () => {
     const [passwordBool, setPasswordBool] = useState(true)
+    const [message, setMessage] = useState("")
+    const { accounts, changeCurrentUser } = useContext(Authentication)
 
     const changeIcon = () => {
         setPasswordBool(prev => !prev)
     }
-
-    const LoginSchema = Yup.object().shape({
-        email: Yup.string()
-            .email('آدرس پست الکترونیکی نامعتبر است')
-            .required('لطفا پست الکترونیکی خود را وارد کنید'),
-        password: Yup.string()
-            .min(6, 'کلمه عبور باید حداقل دارای 6 کاراکتر باشد')
-            .required('لطفا کلمه عبور را وارد کنید'),
-    });
 
     const formik = useFormik({
         initialValues: {
             email: "",
             password: "",
         },
-
         validationSchema: LoginSchema,
 
-        onSubmit: (values, { setSubmitting }) => {
-            // console.log(values);
-            // setSubmitting(false);
+        onSubmit: (values, { setSubmitting, resetForm }) => {
+            let idx = accounts.findIndex(user => user.email === values.email && user.password === values.password)
+            if (idx >= 0) {
+                changeCurrentUser(accounts[idx])
+                setMessage("")
+                resetForm()
+            } else {
+                setMessage("پست الکترونیکی یا کلمه عبور وارد شده اشتباه است")
+            }
+            setSubmitting(false);
         }
     })
-
 
     return (
         <>
@@ -69,7 +68,7 @@ const Login = () => {
                     {formik.errors.password && formik.touched.password && <p className='error mt-2'>{formik.errors.password}</p>}
                 </div>
 
-                {/* {formErrors.ultimateMSG? <p className='log-error error mt-2'>{formErrors.ultimateMSG}</p>: null} */}
+                {<p className="log-error error mt-2 mb-0">{message}</p>}
                 <button className="submit mt-3" type='submit' disabled={formik.isSubmitting}>ورود</button>
             </form>
         </>
