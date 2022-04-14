@@ -10,7 +10,7 @@ const Signup = () => {
     const [passwordBool, setPasswordBool] = useState(true)
     const [provinceData, setProvinceData] = useState("");
     const [message, setMessage] = useState("")
-    const { accounts, addUser, changeCurrentUser} = useContext(Authentication)
+    const { accounts, changeCurrentUser, addUser} = useContext(Authentication)
 
     // get province data
     useEffect(() => {
@@ -33,16 +33,16 @@ const Signup = () => {
         validationSchema : SignupSchema,
 
         onSubmit: (values , { setSubmitting, resetForm }) => {
+            setSubmitting(false);
             if (accounts.some(user => user.email === values.email)) {
                 setMessage("یک حساب کاربری با این ایمیل قبلا ساخته شده است")
             } else {
-                addUser({...values, "id": ""+(accounts.length + 1)})
-                console.log({...values, "id": ""+(accounts.length + 1)})
-                changeCurrentUser({...values, "id": ""+(accounts.length + 1)})
+                let newUser = ({...values, "id": ""+(accounts.length + 1)})
+                addUser(newUser)
+                changeCurrentUser(newUser)
                 setMessage("")
                 resetForm()
             }
-            setSubmitting(false);
         }
     })
 

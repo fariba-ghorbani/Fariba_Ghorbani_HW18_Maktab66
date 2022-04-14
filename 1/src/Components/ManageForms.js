@@ -5,7 +5,7 @@ import HigherOrderComponent from './HigherOrderComponent'
 
 
 function ManageForms() {
-    const [formstatus, setStatus] = useState(true)
+    const [formstatus, setStatus] = useState(false)
     
     const toggleForms = (e) => {
         e.target.id==="login"? setStatus(false): setStatus(true)

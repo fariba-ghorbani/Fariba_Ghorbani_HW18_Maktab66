@@ -2,12 +2,14 @@ import { useEffect, useState, memo } from 'react';
 import axios from 'axios'
 import { Authentication } from './Context/authentication';
 import ManageForms from './Components/ManageForms'
+import MessageModal from './Components/MessageModal';
 
 function App() {
 	const [data, setData] = useState({})
 	const [currentUser, setCurrentUser] = useState("")
 	const [loading, setLoading] = useState(false);
 	const [err, setErr] = useState("");
+	const [show, setShow] = useState(false);
 
     useEffect(() => {
 		setLoading(true);
@@ -21,9 +23,9 @@ function App() {
 
 	const addUser = (newUser) => {
 		axios.post('http://localhost:3001/users', newUser)
-		.then((e) => e.preventDefault())
+		.then(res => console.log(res))
 		.catch(err => setErr(err))
-		.finally(res => console.log(res.data))
+		.finally(setShow(true))
 	}
 
 	const changeCurrentUser = (user) => {
@@ -32,14 +34,15 @@ function App() {
 
     return (
         <>
-		<Authentication.Provider value={{
-			accounts: data,
-			currentUser: currentUser,
-			changeCurrentUser: changeCurrentUser,
-			addUser: addUser
-		}}>
-			<ManageForms loading={loading} err={err} />
-		</Authentication.Provider>
+			<Authentication.Provider value={{
+				accounts: data,
+				currentUser: currentUser,
+				changeCurrentUser: changeCurrentUser,
+				addUser: addUser,
+			}}>
+				<ManageForms loading={loading} err={err} />
+			</Authentication.Provider>
+			<MessageModal show={show} setShow={setShow}/>
         </>
     );
 }

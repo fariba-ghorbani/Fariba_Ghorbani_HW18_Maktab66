@@ -28,7 +28,7 @@ const Login = () => {
                 setMessage("")
                 resetForm()
             } else {
-                setMessage("پست الکترونیکی یا کلمه عبور وارد شده اشتباه است")
+                setMessage("پست الکترونیکی یا کلمه عبور اشتباه وارد شده است")
             }
             setSubmitting(false);
         }
