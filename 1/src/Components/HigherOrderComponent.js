@@ -16,7 +16,7 @@ const HigherOrderComponent = (Component) => {
                 {currentUser? 
                 <div className='app'>
                     <h1 className='app-title'>سلام کاربر {currentUser.name}</h1>
-                    <Button className='my-5' variant="outline-primary" onClick={() => changeCurrentUser("")}>Log out</Button>
+                    <Button className='my-3' variant="outline-primary" onClick={() => changeCurrentUser("")}>Log out</Button>
                 </div>
                 : 
                 <Component {...props}/>
